@@ -14,7 +14,6 @@ import ch.idsia.benchmark.mario.environments.Environment;
 public class ReinforcementLearning {
 	protected Random r;
 	protected HashMap<Integer, double[]> hashQ;
-	protected int stateSize;
 	protected int numberOfActions;
 	final double alpha = 0.1;
     final double gamma = 0.9;
@@ -27,10 +26,9 @@ public class ReinforcementLearning {
     protected int nextState;
     protected int nextAction;
     
-	public ReinforcementLearning (int stateS, int numberOfA, boolean SARSA)
+	public ReinforcementLearning (int numberOfA, boolean SARSA)
 	{
 		r = new Random(System.currentTimeMillis());
-		stateSize = stateS;
 		numberOfActions = numberOfA;
 		hashQ = new HashMap<Integer, double[]>();
 		e = 0.05;
@@ -106,7 +104,6 @@ public class ReinforcementLearning {
 			FileWriter writer = new FileWriter(filename, false);
 			PrintWriter print = new PrintWriter(writer);
 			
-			print.println(stateSize);
 			print.println(numberOfActions);
 			
 			for (Integer key: hashQ.keySet()) {
@@ -133,17 +130,12 @@ public class ReinforcementLearning {
 			BufferedReader bufferedReader = new BufferedReader(reader);
 			line = bufferedReader.readLine();
 			if (line != null) {
-				stateSize = Integer.parseInt(line);
-			}
-			line = bufferedReader.readLine();
-			if (line != null) {
 				numberOfActions = Integer.parseInt(line);
 			}
 			hashQ = new HashMap<Integer, double[]>();
 			int index = 0;
 			int key = 0;
 			while ((line = bufferedReader.readLine()) != null) {
-				if (index >= numberOfActions * stateSize) break;
 				if (index%numberOfActions == 0) {
 					key = Integer.parseInt(line);
 					hashQ.put(key, new double[numberOfActions]);
