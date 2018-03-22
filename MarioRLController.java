@@ -1,4 +1,4 @@
-package gameai_huang.RL.ReinforcementLearningMario;
+package gameai.ReinforcementLearningMario;
 
 import ch.idsia.agents.Agent;
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
@@ -14,6 +14,7 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	private int stuckCount = 0;
 	private int killCount = 0;
 	private int LastMarioMode = marioMode;
+    public boolean isFirstFrame;
 	
 	public MarioRLController(String s) {
 		super("ReinforcementLearning");
@@ -26,6 +27,7 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 			RL = new ReinforcementLearning(s, true);
 		}
 		reward = 0.0;
+		isFirstFrame = true;
 	}
 	
 	public int getReceptiveEnemyCellValue(int x, int y)
@@ -48,6 +50,11 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	public boolean[] getAction() {
 		int reward = getReward();
 		int encodedStates = getState();
+		if (isFirstFrame) {
+			reward = 0;
+			RL.setCurrentState(encodedStates);
+			isFirstFrame = false;
+		}
 		RL.update(encodedStates, reward);
 		int encodedActions = RL.takeAction();
 		action = decodeActions(encodedActions);

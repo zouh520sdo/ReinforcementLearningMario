@@ -1,4 +1,4 @@
-package gameai_huang.RL.ReinforcementLearningMario;
+package gameai.ReinforcementLearningMario;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
