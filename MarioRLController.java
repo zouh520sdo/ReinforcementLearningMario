@@ -48,7 +48,7 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	
 	@Override
 	public boolean[] getAction() {
-		int reward = getReward();
+		int reward = MoveReward();
 		int encodedStates = getState();
 		if (isFirstFrame) {
 			reward = 0;
@@ -192,12 +192,11 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	}
 	
 	int MoveReward() {
-		int reward = 0;
+		int reward = -1;
 		float deltaX = marioFloatPos[0] - LastMarioPos[0];
 		float deltaY = marioFloatPos[1] - LastMarioPos[1];
 		if(deltaX > 0) reward += 100;
 		if(deltaY > 0) reward += 40;
-		
 		return reward;
 	}
 	

@@ -9,7 +9,7 @@ import gameai.ESnew;
 public class RLTest {
 	public static void main(String[] args)
     {
-		int round = 10;
+		int round = 50;
 		String outputFile = "QTest.txt";
     	int level = 0;
     	Environment environment = MarioEnvironment.getInstance();
