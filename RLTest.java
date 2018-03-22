@@ -1,4 +1,4 @@
-package gameai.ReinforcementLearningMario;
+package gameai_huang.RL.ReinforcementLearningMario;
 
 import ch.idsia.benchmark.mario.engine.GlobalOptions;
 import ch.idsia.benchmark.mario.environments.Environment;
@@ -12,7 +12,7 @@ public class RLTest {
 		String outputFile = "QTest.txt";
     	int level = 0;
     	Environment environment = MarioEnvironment.getInstance();
-    	MarioRLController el = new MarioRLController(outputFile);
+    	MarioRLController el = new MarioRLController(null);
 		String argsString = "-vis off -ld " + level + " -ag MarioRLController";
 		CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         cmdLineOptions.setPauseWorld(false);

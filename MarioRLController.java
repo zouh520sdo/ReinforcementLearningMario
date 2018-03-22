@@ -1,4 +1,4 @@
-package gameai.ReinforcementLearningMario;
+package gameai_huang.RL.ReinforcementLearningMario;
 
 import ch.idsia.agents.Agent;
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
@@ -12,6 +12,8 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	protected int state;
 	private float[] LastMarioPos = {0,0};
 	private int stuckCount = 0;
+	private int killCount = 0;
+	private int LastMarioMode = marioMode;
 	
 	public MarioRLController(String s) {
 		super("ReinforcementLearning");
@@ -44,8 +46,8 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	
 	@Override
 	public boolean[] getAction() {
+		int reward = getReward();
 		int encodedStates = getState();
-		reward = -1;
 		RL.update(encodedStates, reward);
 		int encodedActions = RL.takeAction();
 		action = decodeActions(encodedActions);
@@ -169,7 +171,46 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	}
 	/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////
-
+	
+	int getReward() {
+		int reward = -1;
+		reward += MoveReward();
+		reward += KillReward();
+		reward -= DamagePunish();
+		reward -= StuckPunish();
+		
+		killCount = getKillsTotal;
+		LastMarioMode = marioMode;
+		return reward;
+	}
+	
+	int MoveReward() {
+		int reward = 0;
+		float deltaX = marioFloatPos[0] - LastMarioPos[0];
+		float deltaY = marioFloatPos[1] - LastMarioPos[1];
+		if(deltaX > 0) reward += 100;
+		if(deltaY > 0) reward += 40;
+		
+		return reward;
+	}
+	
+	int KillReward() {
+		if(killCount < getKillsTotal) return 200*(getKillsTotal - killCount);
+		else return 0;
+	}
+	
+	int DamagePunish() {
+		return (LastMarioMode-marioMode)*500;
+	}
+	
+	int StuckPunish() {
+		if(s_stuck() == "1") return 100;
+		else return 0;
+	}
+	
+	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+	
 	public boolean[] decodeActions(int encodedActions) {
 		boolean[] output = new boolean[Environment.numberOfButtons];
 		int index = 0;

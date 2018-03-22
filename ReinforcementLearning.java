@@ -1,4 +1,4 @@
-package gameai.ReinforcementLearningMario;
+package gameai_huang.RL.ReinforcementLearningMario;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -37,7 +37,7 @@ public class ReinforcementLearning {
 	
 	public ReinforcementLearning (String filename, boolean SARSA) {
 		r = new Random(System.currentTimeMillis());
-		e = 0.05;
+		e = 0.5;
 		isSARSA = SARSA;
 		loadQ(filename);
 	}
