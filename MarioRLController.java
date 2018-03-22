@@ -2,6 +2,7 @@ package gameai.ReinforcementLearningMario;
 
 import ch.idsia.agents.Agent;
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
+import ch.idsia.benchmark.mario.engine.GlobalOptions;
 import ch.idsia.benchmark.mario.environments.Environment;
 
 public class MarioRLController extends BasicMarioAIAgent implements Agent {
@@ -16,7 +17,12 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 		super("ReinforcementLearning");
 		// TODO Auto-generated constructor stub
 		int numberOfActions = (int)Math.pow(2, Environment.numberOfButtons);
-		RL = new ReinforcementLearning(numberOfActions, true);
+		if (s == null) {
+			RL = new ReinforcementLearning(numberOfActions, true);
+		}
+		else {
+			RL = new ReinforcementLearning(s, true);
+		}
 		reward = 0.0;
 	}
 	
@@ -32,14 +38,14 @@ public class MarioRLController extends BasicMarioAIAgent implements Agent {
 	{
 	    if (x < 0 || x >= marioState.length)
 	        return 0;
-
+	    
 	    return marioState[x];
 	}
 	
 	@Override
 	public boolean[] getAction() {
 		int encodedStates = getState();
-		
+		reward = -1;
 		RL.update(encodedStates, reward);
 		int encodedActions = RL.takeAction();
 		action = decodeActions(encodedActions);

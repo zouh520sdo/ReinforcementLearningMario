@@ -31,7 +31,7 @@ public class ReinforcementLearning {
 		r = new Random(System.currentTimeMillis());
 		numberOfActions = numberOfA;
 		hashQ = new HashMap<Integer, double[]>();
-		e = 0.05;
+		e = 0.5;
 		isSARSA = SARSA;
 	}
 	
@@ -155,9 +155,9 @@ public class ReinforcementLearning {
 	}
 	
 	protected int getArgMaxQ(int state) {
-		int action = -1;
-		double r = Double.MIN_VALUE;
 		double[] QState = getHashQValue(state);
+		int action = 0;
+		double r = QState[action];
 		for (int i=0; i<QState.length; i++) {
 			if (QState[i] > r) {
 				r = QState[i];
